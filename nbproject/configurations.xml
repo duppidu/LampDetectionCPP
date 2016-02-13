@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="95">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <itemPath>main.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <compilerSet>MinGW_1|MinGW</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerLibFileItem>C:/Code/mingw/lib/libopencv_calib3d300.dll.a</linkerLibFileItem>
+            <linkerLibFileItem>C:/Code/mingw/lib/libopencv_core300.dll.a</linkerLibFileItem>
+            <linkerLibFileItem>C:/Code/mingw/lib/libopencv_features2d300.dll.a</linkerLibFileItem>
+            <linkerLibFileItem>C:/Code/mingw/lib/libopencv_flann300.dll.a</linkerLibFileItem>
+            <linkerLibFileItem>C:/Code/mingw/lib/libopencv_hal300.a</linkerLibFileItem>
+            <linkerLibFileItem>C:/Code/mingw/lib/libopencv_highgui300.dll.a</linkerLibFileItem>
+            <linkerLibFileItem>C:/Code/mingw/lib/libopencv_imgcodecs300.dll.a</linkerLibFileItem>
+            <linkerLibFileItem>C:/Code/mingw/lib/libopencv_imgproc300.dll.a</linkerLibFileItem>
+            <linkerLibFileItem>C:/Code/mingw/lib/libopencv_ml300.dll.a</linkerLibFileItem>
+            <linkerLibFileItem>C:/Code/mingw/lib/libopencv_objdetect300.dll.a</linkerLibFileItem>
+            <linkerLibFileItem>C:/Code/mingw/lib/libopencv_photo300.dll.a</linkerLibFileItem>
+            <linkerLibFileItem>C:/Code/mingw/lib/libopencv_shape300.dll.a</linkerLibFileItem>
+            <linkerLibFileItem>C:/Code/mingw/lib/libopencv_stitching300.dll.a</linkerLibFileItem>
+            <linkerLibFileItem>C:/Code/mingw/lib/libopencv_superres300.dll.a</linkerLibFileItem>
+            <linkerLibFileItem>C:/Code/mingw/lib/libopencv_ts300.a</linkerLibFileItem>
+            <linkerLibFileItem>C:/Code/mingw/lib/libopencv_video300.dll.a</linkerLibFileItem>
+            <linkerLibFileItem>C:/Code/mingw/lib/libopencv_videoio300.dll.a</linkerLibFileItem>
+            <linkerLibFileItem>C:/Code/mingw/lib/libopencv_videostab300.dll.a</linkerLibFileItem>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <compilerSet>MinGW_1|MinGW</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+      </compileType>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

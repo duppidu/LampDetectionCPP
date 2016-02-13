@@ -22,7 +22,7 @@ using namespace cv;
 
 class OpenCVTest {
     //public variables
-    Mat original,blue, gray, extractedLight, extractingRed, extractingGreen, extractingOrange, lampsearch;
+    Mat original, gray, extractedLight, extractingRed, extractingGreen, extractingOrange, lampsearch;
     std::map<std::pair<int, string>, Rect> lamps;
 
     //public functions of the class

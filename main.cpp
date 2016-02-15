@@ -20,15 +20,17 @@ using namespace cv;
  * 
  */
 
-class OpenCVTest {
+class OpenCVTest
+{
     //public variables
     Mat original, gray, extractedLight, extractingRed, extractingGreen, extractingOrange, lampsearch;
+    const static int ARRAYSIZE=15;
     std::map<std::pair<int, string>, Rect> lamps;
 
     //public functions of the class
 
 public:
-
+    
     void toGrayscale(Mat);
     void extractingLight(Mat);
     void searchRed(Mat);
@@ -44,7 +46,8 @@ public:
  * @param colored
  */
 
-void OpenCVTest::getMiddlePixelColor(Mat colored) {
+void OpenCVTest::getMiddlePixelColor(Mat colored)
+{
     rectangle(colored, Point(318, 238), Point(322, 242), Scalar(255, 255, 0), 1, 8, 0);
     Vec3b pixel = colored.at<Vec3b>(240, 320);
     int b = pixel[0];
@@ -59,16 +62,19 @@ void OpenCVTest::getMiddlePixelColor(Mat colored) {
  * Turns the original RGB colored image into grayscale
  * @param colored
  */
-void OpenCVTest::toGrayscale(Mat colored) {
+void OpenCVTest::toGrayscale(Mat colored)
+{
 
     int x, y, b, g, r, gray;
     Mat toGrayScale = colored;
 
     //loop witch contains every row and count
-    for (y = 1; y < 480; ++y) {
+    for (y = 1; y < 480; ++y)
+    {
         //loop witch contains every column of the picture
         //and turns every pixel in this column into grayscale
-        for (x = 1; x < 640; ++x) {
+        for (x = 1; x < 640; ++x)
+        {
             Vec3b pixel = toGrayScale.at<Vec3b>(y, x);
             b = pixel[0];
             g = pixel[1];
@@ -83,13 +89,15 @@ void OpenCVTest::toGrayscale(Mat colored) {
     OpenCVTest::gray = toGrayScale;
 }
 
-bool compareContourAreas(std::vector<cv::Point> contour1, std::vector<cv::Point> contour2) {
+bool compareContourAreas(std::vector<cv::Point> contour1, std::vector<cv::Point> contour2)
+{
     double i = fabs(contourArea(cv::Mat(contour1)));
     double j = fabs(contourArea(cv::Mat(contour2)));
     return ( i < j);
 }
 
-Rect* OpenCVTest::findColors(String color, Mat original) {
+Rect* OpenCVTest::findColors(String color, Mat original)
+{
 
     //Different colors object
     Scalar minBGR, maxBGR, contColor, rectColor;
@@ -97,26 +105,36 @@ Rect* OpenCVTest::findColors(String color, Mat original) {
     Mat extractedColor = original;
     Mat canny_output, output;
     //Rectangle array to store every founded bound rectangle of colors
-    Rect *boundrect = new Rect[20];
+    Rect *boundrect = new Rect[OpenCVTest::ARRAYSIZE];
     //count variable
     int y = 0;
 
     //defining the min and max values of colors and the color of the contours of the founded color area
-    if (color == "red") {
+    if (color == "red")
+    {
         minBGR = Scalar(0, 0, 100);
         maxBGR = Scalar(100, 70, 255);
         contColor, rectColor = Scalar(0, 0, 255);
-    } else if (color == "orage") {
-        minBGR = Scalar(0, 0, 0);
-        maxBGR = Scalar(255, 255, 255);
+       
+    }
+    else if (color == "orange")
+    {
+        minBGR = Scalar(0, 0, 100);
+        maxBGR = Scalar(100, 70, 255);
         contColor, rectColor = Scalar(255, 0, 0);
-    } else if (color == "green") {
+    }
+    else if (color == "green")
+    {
         minBGR = Scalar(0, 0, 0);
-        maxBGR = Scalar(255, 255, 255);
+        maxBGR = Scalar(100, 70, 255);
         contColor, rectColor = Scalar(0, 255, 0);
-    } else {
+    }
+    else
+    {
         cout << "Wrong Input" << endl;
     }
+    
+    cout << color << endl;
 
     //searching for the color with the min max values
     inRange(extractedColor, minBGR, maxBGR, extractedColor);
@@ -129,14 +147,14 @@ Rect* OpenCVTest::findColors(String color, Mat original) {
     Mat closingKernel = getStructuringElement(MORPH_RECT,
             Size(14, 14),
             Point(4, 4));
-    
+
     Mat openingKernel = getStructuringElement(MORPH_RECT,
             Size(6, 6),
             Point(4, 4));
 
     //eroding opperation
     morphologyEx(extractedColor, extractedColor, MORPH_OPEN, openingKernel);
-    morphologyEx(extractedColor,extractedColor,MORPH_CLOSE,closingKernel);
+    morphologyEx(extractedColor, extractedColor, MORPH_CLOSE, closingKernel);
 
     erode(extractedColor, extractedColor, erodeKernel);
 
@@ -161,14 +179,16 @@ Rect* OpenCVTest::findColors(String color, Mat original) {
 
 
     // loop to draw contours
-    for (int i = 0; i < contours.size(); i++) {
+    for (int i = 0; i < contours.size(); i++)
+    {
 
-        
-        approxPolyDP(contours[i],contours[i],40,true);
+
+        approxPolyDP(contours[i], contours[i], 40, true);
         Rect x = boundingRect(contours.at(i));
 
         // just draw contours where the area is bigger than 2500 pixels
-        if (x.area() >= 2500) {
+        if (x.area() >= 2500)
+        {
             //draw rectangle around the contours
 
 
@@ -182,19 +202,26 @@ Rect* OpenCVTest::findColors(String color, Mat original) {
 
         }
     }
-    if (color == "red") {
+    if (color == "red")
+    {
         OpenCVTest::extractingRed = output;
-        
-    } else if (color == "orage") {
+
+    }
+    else if (color == "orange")
+    {
         OpenCVTest::extractingOrange = output;
-    } else if (color == "green") {
+    }
+    else if (color == "green")
+    {
         OpenCVTest::extractingGreen = output;
-    } else {
+    }
+    else
+    {
         cout << "Wrong Input" << endl;
     }
 
+
     
-    cout << sizeof((boundrect))/sizeof((*boundrect)) << endl;
     return boundrect;
 }
 
@@ -203,7 +230,8 @@ Rect* OpenCVTest::findColors(String color, Mat original) {
  * and turns the image into a binary black and whigt image 
  * @param grayscale : input picture in grayscale
  */
-void OpenCVTest::extractingLight(Mat grayscale) {
+void OpenCVTest::extractingLight(Mat grayscale)
+{
 
     //turns the dark gray areas to black and scales the brighter again with grayscale
     threshold(grayscale, OpenCVTest::extractedLight, 170, 255, THRESH_TOZERO);
@@ -229,16 +257,18 @@ void OpenCVTest::extractingLight(Mat grayscale) {
     Canny(OpenCVTest::extractedLight, canny_output, 100, 200, 3);
     //Finding Countours opperation
     findContours(canny_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
-   
+
     // loop to draw contours
-    for (int i = 0; i < contours.size(); i++) {
-        
+    for (int i = 0; i < contours.size(); i++)
+    {
+
         //approxPolyDP(contours[i],contours[i],40,true);
-        
-        
+
+
         Rect x = boundingRect(contours.at(i));
         // just draw contours where the area is bigger than 2500 pixels
-        if (x.area() >= 2500) {
+        if (x.area() >= 2500)
+        {
             //draw rectangle around the contours
             rectangle(OpenCVTest::extractedLight, Point(x.x, x.y), Point(x.x + x.width, x.y + x.height), Scalar(255, 0, 255), 3, 8, 0);
             //draw the contours
@@ -254,41 +284,60 @@ void OpenCVTest::extractingLight(Mat grayscale) {
 
 }
 
-
 void OpenCVTest::findLamps()
 {
-    Rect* orange,red,green;
-    
-    
-   orange = OpenCVTest::findColors("orange",OpenCVTest::original);
+    Rect* orange = new Rect[OpenCVTest::ARRAYSIZE];
+    Rect* red = new Rect[OpenCVTest::ARRAYSIZE];
+    Rect* green = new Rect[OpenCVTest::ARRAYSIZE];
+    int orangeCount, redCount, greenCount, lampCount = 0;
    
-   if(orange > 0)
-   {
-      /** red =OpenCVTest::findColors("red",OpenCVTest::original);
-       green = OpenCVTest::findColors("green",OpenCVTest::original);
-       for (int i = 0; i < orange ; i++)
-       {
-           for (int r = 0; r < red ; r++)
-           {
-           if(red[r].x >= orange[i].x - 0.2*orange[i].width && red[r].x <= orange[i].x + 0.2*orange[i].width)
-           {
-               
-           }
-           
-           }
-           
-           
-           
-       }**/
-            
-   }
+    orange = OpenCVTest::findColors("orange", OpenCVTest::original);
+    cout << "bis" << endl;
+    if (orange[orangeCount].area() > 0)
+    {
+        red = OpenCVTest::findColors("red", OpenCVTest::original);
+        green = OpenCVTest::findColors("green", OpenCVTest::original);
+        
+        while (orange[orangeCount].area() > 0 || orangeCount>=20)
+        {
+
+            while (red[redCount].area() > 0 ||redCount>=20)
+            {
+                if (red[redCount].x >= orange[orangeCount].x - 0.2 * orange[orangeCount].width
+                        && red[redCount].x <= orange[orangeCount].x + 0.2 * orange[orangeCount].width
+                        && red[redCount].y >= orange[orangeCount].y + 1.2 * orange[orangeCount].height
+                        && red[redCount].y <= orange[orangeCount].y + 0.8 * orange[orangeCount].height)
+                {
+                    while (green[greenCount].area() > 0)
+                    {
+                        if (green[greenCount].x >= orange[orangeCount].x - 0.2 * orange[orangeCount].width
+                                && green[greenCount].x <= orange[orangeCount].x + 0.2 * orange[orangeCount].width
+                                && green[greenCount].y >= orange[orangeCount].y - 0.8 * orange[orangeCount].height
+                                && green[greenCount].y <= orange[orangeCount].y - 1.2 * orange[orangeCount].height)
+                        {
+                            OpenCVTest::lamps[std::make_pair(lampCount,"red")]= red[redCount];
+                            OpenCVTest::lamps[std::make_pair(lampCount,"orange")]= orange[orangeCount];
+                            OpenCVTest::lamps[std::make_pair(lampCount,"green")]= green[greenCount];
+                            rectangle(OpenCVTest::original, Point(red[redCount].x, red[redCount].y), Point(green[greenCount].x + green[greenCount].width, green[greenCount].y + green[greenCount].height), Scalar(255,0,190), 3, 8, 0);
+                            lampCount++;
+                            
+                        }
+                        greenCount++;
+                    }
+                }
+                redCount++;
+            }
+            orangeCount++;
+        }
+    }
 }
 
 /**
  * This Functin is searches for red color in the colored image
  * @param colored
  */
-void OpenCVTest::searchRed(Mat colored) {
+void OpenCVTest::searchRed(Mat colored)
+{
 
     int redMax = 255;
     int redMin = 100;
@@ -298,10 +347,12 @@ void OpenCVTest::searchRed(Mat colored) {
     int blueMin = 0;
 
     //loop witch contains every row and count
-    for (int y = 1; y < 480; ++y) {
+    for (int y = 1; y < 480; ++y)
+    {
         //loop witch contains every column of the picture
         //and turns every pixel in this column into grayscale
-        for (int x = 1; x < 640; ++x) {
+        for (int x = 1; x < 640; ++x)
+        {
 
             //Pixel accses
             Vec3b pixel = colored.at<Vec3b>(y, x);
@@ -309,13 +360,16 @@ void OpenCVTest::searchRed(Mat colored) {
             int g = pixel[1];
             int r = pixel[2];
             //defining a area witch values the RGB values can have
-            if (redMin < r && r < redMax && greenMin < g && g < greenMax && blueMin < b && b < blueMax) {
+            if (redMin < r && r < redMax && greenMin < g && g < greenMax && blueMin < b && b < blueMax)
+            {
                 //turn every found pixel to whight
                 colored.at<Vec3b>(y, x)[0] = 255;
                 colored.at<Vec3b>(y, x)[1] = 255;
                 colored.at<Vec3b>(y, x)[2] = 255;
 
-            } else {
+            }
+            else
+            {
                 //turn every pixel witch is not in the rage to black
                 colored.at<Vec3b>(y, x)[0] = 0;
                 colored.at<Vec3b>(y, x)[1] = 0;
@@ -328,7 +382,8 @@ void OpenCVTest::searchRed(Mat colored) {
     OpenCVTest::extractingRed = colored;
 }
 
-void OpenCVTest::searchGreen(Mat colored) {
+void OpenCVTest::searchGreen(Mat colored)
+{
     Scalar greenMin = Scalar(70, 90, 40);
     Scalar greenMax = Scalar(120, 255, 70);
     inRange(colored, greenMin, greenMax, OpenCVTest::extractingGreen);
@@ -348,19 +403,22 @@ void OpenCVTest::searchGreen(Mat colored) {
 /**
  * The runing loop witch shows the images
  */
-void OpenCVTest::loop() {
+void OpenCVTest::loop()
+{
     //open the video stream
     VideoCapture stream(0);
-    Rect* redrect;
+   
 
-    if (!stream.isOpened()) {
+    if (!stream.isOpened())
+    {
         cout << "can not open";
 
     }
     bool is_close_call = false;
 
     // loop
-    while (is_close_call != true) {
+    while (is_close_call != true)
+    {
 
         //read the image
         stream.read(OpenCVTest::original);
@@ -376,11 +434,11 @@ void OpenCVTest::loop() {
 
         stream.read(OpenCVTest::original);
 
-        redrect = OpenCVTest::findColors("red", OpenCVTest::original);
-      
+        OpenCVTest::findLamps();
 
 
-        imshow("red", OpenCVTest::extractingRed);
+        imshow("test",extractingOrange);
+        
         //add(extractingRed, extractingGreen, lampsearch);
         //imshow("lampsearch", lampsearch);
 
@@ -390,7 +448,8 @@ void OpenCVTest::loop() {
         //imshow("green", OpenCVTest::extractingGreen);
 
         //Waiting after the loop is done
-        if (waitKey(100) >= 0) {
+        if (waitKey(100) >= 0)
+        {
             is_close_call = true;
         }
 
@@ -403,7 +462,8 @@ void OpenCVTest::loop() {
  * @param argv
  * @return 
  */
-int main(int argc, char** argv) {
+int main(int argc, char** argv)
+{
 
 
     OpenCVTest test;

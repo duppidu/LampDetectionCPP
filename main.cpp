@@ -4,7 +4,7 @@
  *
  * Created on 21. Januar 2016, 01:58
  */
-
+#include <fstream>  
 #include <iostream>
 #include <opencv2/opencv.hpp>
 #include "opencv2/core/core.hpp"
@@ -44,6 +44,7 @@ public:
     void getMiddlePixelColor(Mat);
     Rect* findColors(String, Mat);
     void findLamps();
+    void saveResultsToFile();
 };
 
 /**
@@ -263,7 +264,7 @@ void OpenCVTest::extractingLight(Mat grayscale)
     Canny(OpenCVTest::extractedLight, canny_output, 100, 200, 3);
     //Finding Countours opperation
     findContours(canny_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
-    
+
     for (int lampCount = 0; lampCount < lamps.size(); lampCount++)
     {
         // loop to draw contours
@@ -272,68 +273,68 @@ void OpenCVTest::extractingLight(Mat grayscale)
             //approxPolyDP(contours[i],contours[i],40,true);
             Rect contRect = boundingRect(contours.at(i));
             // just draw contours where the area is bigger than 2500 pixels  
-            
-            if (contRect.area() >= 2500 
+
+            if (contRect.area() >= 2500
                     && contRect.x >= lamps[lampCount].red.x
                     && contRect.x <= lamps[lampCount].red.x + lamps[lampCount].red.width
                     && contRect.y >= lamps[lampCount].red.y
                     && contRect.y <= lamps[lampCount].red.y + lamps[lampCount].red.height)
             {
-                
+
                 lamps[lampCount].redOn = true;
                 //draw rectangle around the contours
                 rectangle(OpenCVTest::extractedLight, Point(contRect.x, contRect.y), Point(contRect.x + contRect.width, contRect.y + contRect.height), Scalar(255, 0, 255), 3, 8, 0);
                 //draw the contours
                 drawContours(OpenCVTest::extractedLight, contours, i, Scalar(255, 0, 255), 2, 8, hierarchy, 0, Point(0, 0));
-                
+
             }
             else
             {
                 lamps[lampCount].redOn = false;
             }
 
-            
-            
-            if (contRect.area() >= 2500 
+
+
+            if (contRect.area() >= 2500
                     && contRect.x >= lamps[lampCount].orange.x
                     && contRect.x <= lamps[lampCount].orange.x + lamps[lampCount].orange.width
                     && contRect.y >= lamps[lampCount].orange.y
                     && contRect.y <= lamps[lampCount].orange.y + lamps[lampCount].orange.height)
             {
-                
+
                 lamps[lampCount].orangeOn = true;
                 //draw rectangle around the contours
                 rectangle(OpenCVTest::extractedLight, Point(contRect.x, contRect.y), Point(contRect.x + contRect.width, contRect.y + contRect.height), Scalar(255, 0, 255), 3, 8, 0);
                 //draw the contours
                 drawContours(OpenCVTest::extractedLight, contours, i, Scalar(255, 0, 255), 2, 8, hierarchy, 0, Point(0, 0));
-                
+
             }
             else
             {
                 lamps[lampCount].orangeOn = false;
             }
 
-            
-              if (contRect.area() >= 2500 
+
+            if (contRect.area() >= 2500
                     && contRect.x >= lamps[lampCount].green.x
                     && contRect.x <= lamps[lampCount].green.x + lamps[lampCount].green.width
                     && contRect.y >= lamps[lampCount].green.y
                     && contRect.y <= lamps[lampCount].green.y + lamps[lampCount].green.height)
             {
-                
+
                 lamps[lampCount].greenOn = true;
                 //draw rectangle around the contours
                 rectangle(OpenCVTest::extractedLight, Point(contRect.x, contRect.y), Point(contRect.x + contRect.width, contRect.y + contRect.height), Scalar(255, 0, 255), 3, 8, 0);
                 //draw the contours
                 drawContours(OpenCVTest::extractedLight, contours, i, Scalar(255, 0, 255), 2, 8, hierarchy, 0, Point(0, 0));
-                
+
             }
             else
             {
                 lamps[lampCount].greenOn = false;
             }
-            
-            
+
+
         }
     }
 
@@ -461,6 +462,18 @@ void OpenCVTest::searchGreen(Mat colored)
 
 }
 
+void OpenCVTest::saveResultsToFile()
+{
+    int lampcount = 0;
+    std::ofstream ofs;
+    ofs.open("output.txt", std::ofstream::out | std::ofstream::trunc);
+    while (lamps[lampcount].orange.area() > 0)
+    {
+        ofs << lamps[lampcount].redOn << lamps[lampcount].orangeOn << lamps[lampcount].greenOn <<"\n";
+    }
+    ofs.close();
+}
+
 /**
  * The runing loop witch shows the images
  */
@@ -497,7 +510,9 @@ void OpenCVTest::loop()
 
         OpenCVTest::findLamps();
 
+        OpenCVTest::extractingLight(OpenCVTest::gray);
 
+        OpenCVTest::saveResultsToFile();
         imshow("test", extractingOrange);
 
         //add(extractingRed, extractingGreen, lampsearch);

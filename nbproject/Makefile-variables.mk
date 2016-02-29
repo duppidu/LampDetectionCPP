@@ -9,19 +9,19 @@ CND_DISTDIR=dist
 # Debug configuration
 CND_PLATFORM_Debug=MinGW_1-Windows
 CND_ARTIFACT_DIR_Debug=dist/Debug/MinGW_1-Windows
-CND_ARTIFACT_NAME_Debug=cppapplication_3
-CND_ARTIFACT_PATH_Debug=dist/Debug/MinGW_1-Windows/cppapplication_3
+CND_ARTIFACT_NAME_Debug=opencvtesting
+CND_ARTIFACT_PATH_Debug=dist/Debug/MinGW_1-Windows/opencvtesting
 CND_PACKAGE_DIR_Debug=dist/Debug/MinGW_1-Windows/package
-CND_PACKAGE_NAME_Debug=cppapplication3.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/MinGW_1-Windows/package/cppapplication3.tar
+CND_PACKAGE_NAME_Debug=opencvtesting.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/MinGW_1-Windows/package/opencvtesting.tar
 # Release configuration
 CND_PLATFORM_Release=MinGW_1-Windows
 CND_ARTIFACT_DIR_Release=dist/Release/MinGW_1-Windows
-CND_ARTIFACT_NAME_Release=cppapplication_3
-CND_ARTIFACT_PATH_Release=dist/Release/MinGW_1-Windows/cppapplication_3
+CND_ARTIFACT_NAME_Release=opencvtesting
+CND_ARTIFACT_PATH_Release=dist/Release/MinGW_1-Windows/opencvtesting
 CND_PACKAGE_DIR_Release=dist/Release/MinGW_1-Windows/package
-CND_PACKAGE_NAME_Release=cppapplication3.tar
-CND_PACKAGE_PATH_Release=dist/Release/MinGW_1-Windows/package/cppapplication3.tar
+CND_PACKAGE_NAME_Release=opencvtesting.tar
+CND_PACKAGE_PATH_Release=dist/Release/MinGW_1-Windows/package/opencvtesting.tar
 #
 # include compiler specific variables
 #

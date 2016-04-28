@@ -47,7 +47,7 @@ public:
     Rect* searchColors(String, Mat);
     void searchLamps();
     void saveResultsToFile();
-    
+
 };
 
 /**
@@ -58,7 +58,7 @@ public:
 
 void OpenCVTest::getMiddlePixelColor(Mat colored)
 {
-    rectangle(colored, Point(318, 238), Point(322, 242), Scalar(255, 0,190), 1, 8, 0);
+    rectangle(colored, Point(318, 238), Point(322, 242), Scalar(255, 0, 190), 1, 8, 0);
     Vec3b pixel = colored.at<Vec3b>(240, 320);
     int b = pixel[0];
     int g = pixel[1];
@@ -69,8 +69,10 @@ void OpenCVTest::getMiddlePixelColor(Mat colored)
 }
 
 /**
- * Turns the original RGB colored image into grayscale
- * @param colored
+ * compares the area of the contours for the sorting algorithm
+ * @param contour1
+ * @param contour2
+ * @return 
  */
 
 
@@ -81,6 +83,12 @@ bool compareContourAreas(std::vector<cv::Point> contour1, std::vector<cv::Point>
     return ( i < j);
 }
 
+/**
+ * Search for colour function with some image processing work
+ * @param color
+ * @param original image
+ * @return 
+ */
 Rect* OpenCVTest::searchColors(String color, Mat original)
 {
 
@@ -99,27 +107,27 @@ Rect* OpenCVTest::searchColors(String color, Mat original)
     //defining the min and max values of colors and the color of the contours of the founded color area
     if (color == "red")
     {
-        offMinBGR = Scalar(0, 0, 19);
-        offMaxBGR = Scalar(1, 1, 180);
+        offMinBGR = Scalar(10, 0, 19);
+        offMaxBGR = Scalar(60, 1, 180);
         onMinBGR = Scalar(0, 0, 230);
-        onMaxBGR = Scalar(10, 8, 250);
+        onMaxBGR = Scalar(20, 8, 255);
         contColor = Scalar(0, 0, 255);
 
     }
     else if (color == "orange")
     {
         offMinBGR = Scalar(0, 20, 130);
-        offMaxBGR = Scalar(50, 125, 160);
+        offMaxBGR = Scalar(50, 125, 210);
         onMinBGR = Scalar(0, 88, 239);
-        onMaxBGR = Scalar(40, 188, 254);
+        onMaxBGR = Scalar(40, 220, 255);
         contColor = Scalar(255, 0, 0);
     }
     else if (color == "green")
     {
-        offMinBGR = Scalar(100, 110, 10);
-        offMaxBGR = Scalar(110, 155, 70);
-        onMinBGR = Scalar(156, 170, 40);
-        onMaxBGR = Scalar(223, 230, 83);
+        offMinBGR = Scalar(130, 109, 0);
+        offMaxBGR = Scalar(163, 140, 10);
+        onMinBGR = Scalar(180, 200, 80);
+        onMaxBGR = Scalar(223, 230, 95);
         contColor = Scalar(0, 255, 0);
     }
     else
@@ -132,32 +140,36 @@ Rect* OpenCVTest::searchColors(String color, Mat original)
     //searching for the color with the min max values
     inRange(colorOff, offMinBGR, offMaxBGR, colorOff);
     inRange(colorOn, onMinBGR, onMaxBGR, colorOn);
+    //combines the two searches
     bitwise_or(colorOff, colorOn, extractedColor);
 
+    //Values for the erode function
     Mat erodeKernel = getStructuringElement(MORPH_RECT,
             Size(25, 8),
             Point(1, 1));
+    //Values for the closing function
     Mat closingKernel = getStructuringElement(MORPH_RECT,
             Size(8, 8),
             Point(4, 4));
-
+    //Values for the opening function
     Mat openingKernel = getStructuringElement(MORPH_RECT,
-            Size(4, 4),
+            Size(3, 3),
             Point(1, 1));
 
-    //eroding opperation
+   
 
-
+//cloesing
     morphologyEx(extractedColor, extractedColor, MORPH_CLOSE, closingKernel);
+//opening
     morphologyEx(extractedColor, extractedColor, MORPH_OPEN, openingKernel);
-
+//dialation
     dilate(extractedColor, extractedColor, erodeKernel);
-
+//combining the result with the original
     bitwise_and(original, original, output, extractedColor);
 
 
 
-    //contours matrix
+    
 
 
     //Contours object
@@ -225,7 +237,7 @@ Rect* OpenCVTest::searchColors(String color, Mat original)
 void OpenCVTest::extractingLight(Mat original)
 {
     int lampCount = 0;
-    
+
 
     cvtColor(original, OpenCVTest::extractedLight, CV_BGR2GRAY);
 
@@ -244,7 +256,7 @@ void OpenCVTest::extractingLight(Mat original)
             Size(2, 2),
             Point(1, 1));
 
-
+//closing
     morphologyEx(OpenCVTest::extractedLight, OpenCVTest::extractedLight, MORPH_CLOSE, cloesingKernel);
 
 
@@ -255,9 +267,9 @@ void OpenCVTest::extractingLight(Mat original)
 
     while (lamps[lampCount].orange.area() > 0)
     {
-     int redDetectedCount = 0;
-    int orangeDetectedCount = 0;
-    int greenDetectedCount = 0;
+        int redDetectedCount = 0;
+        int orangeDetectedCount = 0;
+        int greenDetectedCount = 0;
 
         for (int orangeYCount = lamps[lampCount].orange.y; orangeYCount < lamps[lampCount].orange.y + lamps[lampCount].orange.height; orangeYCount++)
         {
@@ -329,7 +341,7 @@ void OpenCVTest::extractingLight(Mat original)
             lamps[lampCount].greenOn = false;
         }
 
-        cout << redDetectedCount << "     "<< orangeDetectedCount <<  "     " << greenDetectedCount << endl;
+        cout << redDetectedCount << "     " << orangeDetectedCount << "     " << greenDetectedCount << endl;
         lampCount++;
     }
     OpenCVTest::saveResultsToFile();
@@ -372,7 +384,7 @@ void OpenCVTest::searchLamps()
                                 && green[greenCount].y >= orange[orangeCount].y + 0.1 * orange[orangeCount].height
                                 && green[greenCount].y <= orange[orangeCount].y + 3 * orange[orangeCount].height)
                         {
-                           
+
                             lamps[lampCount].red = red[redCount];
                             lamps[lampCount].orange = orange[orangeCount];
                             lamps[lampCount].green = green[greenCount];
@@ -439,18 +451,8 @@ void OpenCVTest::loop()
 
         OpenCVTest::getMiddlePixelColor(OpenCVTest::originalColour);
 
-        //OpenCVTest::searchColors("green",OpenCVTest::originalColour);
+        OpenCVTest::searchLamps();     
 
-
-        OpenCVTest::searchLamps();
-        
-        OpenCVTest::searchColors("red", OpenCVTest::originalColour);
-        imshow("red", OpenCVTest::extractingRed);
-        OpenCVTest::searchColors("orange", OpenCVTest::originalColour);
-        imshow("orange", OpenCVTest::extractingOrange);
-        OpenCVTest::searchColors("green", OpenCVTest::originalColour);
-        imshow("green", OpenCVTest::extractingGreen);
-        
         OpenCVTest::extractingLight(OpenCVTest::originalLight);
         imshow("original", OpenCVTest::originalColour);
 

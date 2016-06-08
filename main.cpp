@@ -10,7 +10,11 @@
 #include "opencv2/core/core.hpp"
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+#include <cstdio>
+#include <cstring>
 
+#include <lamp.h>
+#include <mosquittopp.h>
 
 
 using namespace std;
@@ -465,6 +469,66 @@ void OpenCVTest::loop()
 
     }
 }
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+mqtt_lamp::mqtt_lamp(const char *id, const char *host, int port) : mosquittopp(id)
+{
+	int keepalive = 60;
+
+	/* Connect immediately. This could also be done by calling
+	 * mqtt_tempconv->connect(). */
+	connect(host, port, keepalive);
+};
+
+mqtt_lamp::~mqtt_lamp()
+{
+}
+
+void mqtt_lamp::on_connect(int rc)
+{
+	printf("Connected with code %d.\n", rc);
+	if(rc == 0){
+		/* Only attempt to subscribe on a successful connect. */
+		subscribe(NULL, "TOPIC");
+	}
+}
+
+void mqtt_lamp::on_message(const struct mosquitto_message *message)
+{
+	
+	int lamp[3];
+        lamp[0]= lamps[0].redOn;
+        lamp[1]= lamps[0].orangeOn;
+        lamp[2]= lamps[0].greenOn;
+
+	if(!strcmp(message->topic, "TOPIC")){
+		memset(buf, 0, 3*sizeof(int));
+		/* Copy N-1 bytes to ensure always 0 terminated. */
+		memcpy(lamp, message->payload, 2*sizeof(int));
+		
+		
+		publish(NULL, "TOPIC", strlen(lamp), lamp);
+	}
+}
+
+void mqtt_lamp::on_subscribe(int mid, int qos_count, const int *granted_qos)
+{
+	printf("Subscription succeeded.\n");
+}
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
 
 /**
  * Main class to run the programm

@@ -4,6 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>lamp.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -12,7 +13,9 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>lamp.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
+      <itemPath>newmain.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -36,7 +39,20 @@
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
+        <ccTool>
+          <incDir>
+            <pElem>C:/Program Files (x86)/mosquitto/devel</pElem>
+            <pElem>C:/Program Files (x86)/mosquitto</pElem>
+          </incDir>
+          <incFile>
+            <pElem>C:/Program Files (x86)/mosquitto/devel</pElem>
+          </incFile>
+        </ccTool>
         <linkerTool>
+          <linkerAddLib>
+            <pElem>C:/Program Files (x86)/mosquitto</pElem>
+            <pElem>C:/Program Files (x86)/mosquitto/devel</pElem>
+          </linkerAddLib>
           <linkerLibItems>
             <linkerLibFileItem>C:/Code/mingw/lib/libopencv_calib3d300.dll.a</linkerLibFileItem>
             <linkerLibFileItem>C:/Code/mingw/lib/libopencv_core300.dll.a</linkerLibFileItem>
@@ -56,10 +72,23 @@
             <linkerLibFileItem>C:/Code/mingw/lib/libopencv_video300.dll.a</linkerLibFileItem>
             <linkerLibFileItem>C:/Code/mingw/lib/libopencv_videoio300.dll.a</linkerLibFileItem>
             <linkerLibFileItem>C:/Code/mingw/lib/libopencv_videostab300.dll.a</linkerLibFileItem>
+            <linkerLibLibItem>mosquitto</linkerLibLibItem>
+            <linkerLibLibItem>mosquittopp</linkerLibLibItem>
+            <linkerLibLibItem>eay32</linkerLibLibItem>
+            <linkerLibLibItem>mosquitto</linkerLibLibItem>
+            <linkerLibLibItem>mosquittopp</linkerLibLibItem>
+            <linkerLibLibItem>pthreadVC2</linkerLibLibItem>
+            <linkerLibLibItem>ssleay32</linkerLibLibItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="lamp.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="lamp.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="newmain.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -82,7 +111,13 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="lamp.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="lamp.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="newmain.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
   </confs>

@@ -35,7 +35,9 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/main.o
+	${OBJECTDIR}/lamp.o \
+	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/newmain.o
 
 
 # C Compiler Flags
@@ -52,7 +54,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=/C/Code/mingw/lib/libopencv_calib3d300.dll.a /C/Code/mingw/lib/libopencv_core300.dll.a /C/Code/mingw/lib/libopencv_features2d300.dll.a /C/Code/mingw/lib/libopencv_flann300.dll.a /C/Code/mingw/lib/libopencv_hal300.a /C/Code/mingw/lib/libopencv_highgui300.dll.a /C/Code/mingw/lib/libopencv_imgcodecs300.dll.a /C/Code/mingw/lib/libopencv_imgproc300.dll.a /C/Code/mingw/lib/libopencv_ml300.dll.a /C/Code/mingw/lib/libopencv_objdetect300.dll.a /C/Code/mingw/lib/libopencv_photo300.dll.a /C/Code/mingw/lib/libopencv_shape300.dll.a /C/Code/mingw/lib/libopencv_stitching300.dll.a /C/Code/mingw/lib/libopencv_superres300.dll.a /C/Code/mingw/lib/libopencv_ts300.a /C/Code/mingw/lib/libopencv_video300.dll.a /C/Code/mingw/lib/libopencv_videoio300.dll.a /C/Code/mingw/lib/libopencv_videostab300.dll.a
+LDLIBSOPTIONS=-L/C/Program\ Files\ \(x86\)/mosquitto -L/C/Program\ Files\ \(x86\)/mosquitto/devel /C/Code/mingw/lib/libopencv_calib3d300.dll.a /C/Code/mingw/lib/libopencv_core300.dll.a /C/Code/mingw/lib/libopencv_features2d300.dll.a /C/Code/mingw/lib/libopencv_flann300.dll.a /C/Code/mingw/lib/libopencv_hal300.a /C/Code/mingw/lib/libopencv_highgui300.dll.a /C/Code/mingw/lib/libopencv_imgcodecs300.dll.a /C/Code/mingw/lib/libopencv_imgproc300.dll.a /C/Code/mingw/lib/libopencv_ml300.dll.a /C/Code/mingw/lib/libopencv_objdetect300.dll.a /C/Code/mingw/lib/libopencv_photo300.dll.a /C/Code/mingw/lib/libopencv_shape300.dll.a /C/Code/mingw/lib/libopencv_stitching300.dll.a /C/Code/mingw/lib/libopencv_superres300.dll.a /C/Code/mingw/lib/libopencv_ts300.a /C/Code/mingw/lib/libopencv_video300.dll.a /C/Code/mingw/lib/libopencv_videoio300.dll.a /C/Code/mingw/lib/libopencv_videostab300.dll.a -lmosquitto -lmosquittopp -leay32 -lmosquitto -lmosquittopp -lpthreadVC2 -lssleay32
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -98,10 +100,20 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/opencvtesting.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/opencvtesting ${OBJECTFILES} ${LDLIBSOPTIONS}
 
+${OBJECTDIR}/lamp.o: lamp.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/C/Program\ Files\ \(x86\)/mosquitto/devel -I/C/Program\ Files\ \(x86\)/mosquitto -include /C/Program\ Files\ \(x86\)/mosquitto/devel -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/lamp.o lamp.cpp
+
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -g -I/C/Program\ Files\ \(x86\)/mosquitto/devel -I/C/Program\ Files\ \(x86\)/mosquitto -include /C/Program\ Files\ \(x86\)/mosquitto/devel -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/newmain.o: newmain.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/C/Program\ Files\ \(x86\)/mosquitto/devel -I/C/Program\ Files\ \(x86\)/mosquitto -include /C/Program\ Files\ \(x86\)/mosquitto/devel -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/newmain.o newmain.cpp
 
 # Subprojects
 .build-subprojects:
